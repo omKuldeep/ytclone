@@ -13,7 +13,7 @@ class ShortVideoProvider extends ChangeNotifier{
   bool get isLoading=>_isLoading;
 
   void setLoading(bool value){
-    log("message");
+
     _isLoading=value;
     notifyListeners();
   }
