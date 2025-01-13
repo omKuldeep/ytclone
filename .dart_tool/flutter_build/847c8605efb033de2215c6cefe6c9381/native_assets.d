@@ -1,0 +1,1 @@
+ C:\\Users\\Lenovo\\StudioProjects\\kio_chat\\.dart_tool\\flutter_build\\847c8605efb033de2215c6cefe6c9381\\native_assets.yaml: 

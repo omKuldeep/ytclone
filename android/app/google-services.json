@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "363790768154",
+    "project_id": "kio-chat",
+    "storage_bucket": "kio-chat.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:363790768154:android:1481d27de936238e6e59a3",
+        "android_client_info": {
+          "package_name": "com.example.kio_chat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChsycGsKwyifmSS4jmB_KIn2v-MBoLsRE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
