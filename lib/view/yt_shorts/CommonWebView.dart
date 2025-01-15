@@ -123,6 +123,7 @@ class _ShortVideosState extends State<ShortVideos> {
           ) : Positioned(height: 40,width: 40,
             top: 20.0,
             child: IconButton(onPressed: (){
+              provider.webViewController.pauseAllMediaPlayback();
               Navigator.pop(context);
             }, icon: const Icon(Icons.arrow_back,color: Colors.black54,size: 40,)),
           ),

@@ -13,7 +13,7 @@ import '../view/video_player_view/enum.dart';
 class VideoPlayerProvider extends ChangeNotifier{
 
   static String Api_KEY = "AIzaSyAaATaZ1TE5aeCFY4SWx6p70KWWQVL5K1M";
-  final YoutubeAPI _yt = YoutubeAPI(Api_KEY, maxResults: 150, type: "video",);
+  final YoutubeAPI _yt = YoutubeAPI(Api_KEY, maxResults: 100, type: "video",);
   List<Response<YouTubeVideo>> response=[];
 
   late YoutubePlayerController _playerController;
@@ -25,7 +25,7 @@ class VideoPlayerProvider extends ChangeNotifier{
   late YoutubeMetaData _videoMetaData;
    YoutubeMetaData get videoMetaData=> _videoMetaData;
 
-  double _volume = 50.0;
+  double _volume = 100.0;
   double get volume => _volume;
   bool _muted = false;
   bool get muted => _muted;
@@ -114,7 +114,9 @@ log(isPlayerReady.toString());
       _fullScreen=false;
       _bottomSheetHeight=100.0;
       InAppWebViewSettings  settings = InAppWebViewSettings(
-
+        allowBackgroundAudioPlaying: true,
+        allowsAirPlayForMediaPlayback: true,
+        allowsPictureInPictureMediaPlayback: true,
         javaScriptEnabled: true,
         mediaPlaybackRequiresUserGesture: false,
         preferredContentMode: UserPreferredContentMode.MOBILE,
@@ -131,7 +133,7 @@ log(isPlayerReady.toString());
           disableDragSeek: false,
           loop: false,
           isLive: false,
-          forceHD: false,
+         // forceHD: false,
           enableCaption: false,
           controlsVisibleAtStart: false,
         ),
@@ -166,7 +168,7 @@ log(isPlayerReady.toString());
       //  });
     //  notifyListeners();
     }else{
-      notifyListeners();
+      notifier();
     }
     if(_playerController.value.isPlaying){
       _isPlay=true;
@@ -175,7 +177,8 @@ log(isPlayerReady.toString());
     }
 
     if(playerController.value.playerState.name.toString()=="paused"){
-      _isPlay=true;
+      log("pause ");
+      _isPlay=false;
       notifyListeners();
     }else if(playerController.value.playerState.name.toString()=="buffering"){
       _isPlay=true;
@@ -183,15 +186,16 @@ log(isPlayerReady.toString());
     }else if(playerController.value.playerState.name.toString()=="unknown"){
       notifyListeners();
     }
-
   }
 
   void disposeData(){
     _playerController.pause();
-    _playerController.dispose();
     _isPlayerReady=false;
     _isPlay=true;
     _isRepeat=false;
+    timerNotifier(false);
+    _playerController.dispose();
+
   }
 
   void setVolumes(volume){
@@ -232,7 +236,7 @@ log(isPlayerReady.toString());
 
   void play(){
 
-    log("has "+playerController.value.position.toString());
+   // log("has "+playerController.value.position.toString());
     if(!playerController.value.hasPlayed) {
       log("reload");
      playerController.reload();
@@ -250,12 +254,12 @@ log(isPlayerReady.toString());
       }
     }
 
-    notifyListeners();
+    notifier();
   }
 
   void repeat(){
     _isRepeat=!_isRepeat;
-    notifyListeners();
+    notifier();
   }
 
   void playAllList(bool value,bool value1){
@@ -263,7 +267,7 @@ log(isPlayerReady.toString());
     _isFavSheetOpen=value1;
     _showPlayer=value;
     _bottomSheetHeight=0.0;
-    notifyListeners();
+    notifier();
   }
 
 
@@ -290,10 +294,9 @@ notifyListeners();
     _playerController.pause();
     try {
       _playerController.load(list[(list.indexOf(_playerController.metadata.videoId) +1) % list.length]);
-    } on Exception catch (e) {
-      // TODO
-    }
 
+    } on Exception {}
+    notifier();
   }
 
   void playPrev(list){
@@ -302,5 +305,22 @@ notifyListeners();
     _playerController.load(list[(list.indexOf(_playerController.metadata.videoId) -1) % list.length]);
 
   }
+  notifier(){
+    Future.delayed(const Duration(milliseconds: 500),(){
+      notifyListeners();
+    });
+  }
 
+  Timer? timer;
+
+  timerNotifier(bool isStart){
+    if (isStart) {
+     timer= Timer.periodic(const Duration(seconds: 30),(t){
+        notifyListeners();
+      });
+    }else{
+      timer!.cancel();
+    }
+  }
 }
+

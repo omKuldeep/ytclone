@@ -127,10 +127,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> with WidgetsBindi
         ignoring:widget.fullScreen?false:true ,
         child: YoutubePlayerBuilder(
           onExitFullScreen: () {
-            // The player forces portraitUp after exiting fullscreen. This overrides the behaviour.
             SystemChrome.setPreferredOrientations(DeviceOrientation.values);
-          },
-          player: YoutubePlayer(
+          }, player: YoutubePlayer(
             controller: _controller.playerController,
             showVideoProgressIndicator: true,
             progressIndicatorColor: Colors.blueAccent,
@@ -163,7 +161,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> with WidgetsBindi
             onReady: () {
               _controller.playerReady(true);
               _controller.play();
-              log("endddz");
+
+              _controller.timerNotifier(true);
+            //  log("endddz");
           //    log("enddds ${_controller.playerController.value.hasPlayed}");
 
             },
@@ -171,13 +171,13 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> with WidgetsBindi
               if(_controller.isRepeat){
                 _controller.playerController.reload();
               }else{
-
                 if(_controller.videoList.isNotEmpty){
                    _controller.playerController.load(_controller.videoList[(_controller.videoList.indexOf(data.videoId) + 1) % _controller.videoList.length]);
                    _showSnackBar('Next Video Started!');
                 } else{
-                  _controller.playerController.reset();
+                  _controller.playerController.pause();
                   _controller.playerReady(true);
+                  _controller.timerNotifier(false);
                 }
 
               }
@@ -414,9 +414,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> with WidgetsBindi
                                      _showSnackBar("No next video");
 
                                    }
-                                 }catch(e){
-
-                                 }
+                                 }catch(e){}
 
                                   }
                                 }

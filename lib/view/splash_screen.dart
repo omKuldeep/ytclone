@@ -61,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
       case AppLifecycleState.paused:
         log('App minimised or Screen pause');
         if(videoPlayerProvider.showPlayer || videoPlayerProvider.isPlayerReady){
-          videoPlayerProvider.playerController.pause();
+         // videoPlayerProvider.playerController.pause();
         }
         if(!shortVideoProvider.isLoading){
           shortVideoProvider.webViewController.pause();
@@ -78,16 +78,18 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
         if(!shortVideoProvider.isLoading){
           shortVideoProvider.webViewController.dispose();
         }
-
+        WidgetsBinding.instance.removeObserver(this);
+        break;
       case AppLifecycleState.inactive:
         log('App minimised or Screen ina');
         if(videoPlayerProvider.showPlayer || videoPlayerProvider.isPlayerReady){
-          videoPlayerProvider.playerController.pause();
-        }
+         // videoPlayerProvider.playerController.pause();
 
+        }
+        break;
       case AppLifecycleState.hidden:
         if(videoPlayerProvider.showPlayer || videoPlayerProvider.isPlayerReady){
-          videoPlayerProvider.playerController.pause();
+        //  videoPlayerProvider.playerController.pause();
         }
 
         if(!shortVideoProvider.isLoading){
@@ -95,6 +97,7 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
         }
 
         log('App minimised or Screen hide');
+        break;
     }
   }
 
@@ -115,8 +118,7 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
   Widget build(BuildContext context) {
     videoPlayerProvider=Provider.of<VideoPlayerProvider>(context,listen: false);
     shortVideoProvider=Provider.of<ShortVideoProvider>(context,listen: false);
-
-    return  const Scaffold(
+    return const Scaffold(
       body:Center(
         child: Text("Welcome Back!"),
       ),

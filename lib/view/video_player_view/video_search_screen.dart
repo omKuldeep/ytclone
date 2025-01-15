@@ -41,7 +41,7 @@ class _VideoSearchScreenState extends State<VideoSearchScreen> with TickerProvid
     context.read<FavouriteProvider>().initBox();
 
     Future.delayed(const Duration(seconds: 1),(){
-      context.read<VideoPlayerProvider>().searchVideo("trending hindi songs ${now.year}");
+      context.read<VideoPlayerProvider>().searchVideo("trending new hindi songs ${now.year}");
     });
   }
   @override
@@ -423,7 +423,6 @@ class ShowVideoPlayer extends StatelessWidget {
                        itemBuilder: (context,index){
                          YouTubeVideo? video=provider.response[0].data?[index];
 
-                        log("notify");
                          print(provider.response[0].data?.length);
 
                          var title=video!.title.toString();
@@ -442,10 +441,11 @@ class ShowVideoPlayer extends StatelessWidget {
                                  // selectedTileColor: Colors.blue.withOpacity(0.5),
                                  //
                                    onTap: (){
+                                     log(url.toString());
 
                                      if(url.startsWith("https://www.youtube.com/playlist?")){
                                 // log(video.url.toString());
-                                toast(context, "This is video playlist");
+                                toast(context, "This is video playlists");
                                 // Navigator.push(context, MaterialPageRoute(builder: (_)=>MyHomePage(title: video.url.toString(),)));
                                     }else if(url.startsWith("https://www.youtube.com/watch?v=")){
                                 // _bottomSheetHeight=size.height;
@@ -555,7 +555,7 @@ class ShowVideoPlayer extends StatelessWidget {
                      return val.showPlayer? GestureDetector(
                        onTapUp: (v){
                          if(!val.fullScreen){
-                           val.changeBottomSheetHeight(MediaQuery.of(context).size.height - (kToolbarHeight + kBottomNavigationBarHeight+22));
+                           val.changeBottomSheetHeight((MediaQuery.of(context).size.height-45) - (kToolbarHeight + kBottomNavigationBarHeight));
                          }
                        },
                        child: Container(
@@ -571,9 +571,9 @@ class ShowVideoPlayer extends StatelessWidget {
                                if (val.fullScreen) Container() else Positioned(
                                  height: 100,
                                  left: 200,
-                                 child: val.isPlayerReady? IconButton(onPressed: (){
+                                 child: val.isPlayerReady ? IconButton(onPressed: (){
                                    val.play();
-                                 }, icon: Icon(val.isPlay ?Icons.pause :Icons.play_arrow,color: Colors.white,size: 60,)):
+                                 }, icon: Icon(val.playerController.value.isPlaying ? Icons.pause :Icons.play_arrow,color: Colors.white,size: 60,)):
                                  const Center(child: CircularProgressIndicator(color: Colors.white,)),
                                ),
 
@@ -587,9 +587,9 @@ class ShowVideoPlayer extends StatelessWidget {
                                      }, icon: val.isRepeat ? const Icon(Icons.repeat,color: Colors.blue,): const Icon(Icons.repeat,color: Colors.grey,)),
 
 
-                                    val.isPlayerReady? IconButton(onPressed: (){
-                                       if (list.isNotEmpty) {
-                                         val.playNext(list);
+                                    val.isPlayerReady && val.videoList.length>1 ? IconButton(onPressed: (){
+                                       if (val.videoList.length>1) {
+                                         val.playNext(val.videoList);
                                        }
                                      }, icon: const Icon(Icons.skip_next,color: Colors.white,)):Container()
 

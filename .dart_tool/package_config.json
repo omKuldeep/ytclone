@@ -986,6 +986,12 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "workmanager",
+      "rootUri": "file:///C:/Users/Lenovo/AppData/Local/Pub/Cache/hosted/pub.dev/workmanager-0.5.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
       "name": "xdg_directories",
       "rootUri": "file:///C:/Users/Lenovo/AppData/Local/Pub/Cache/hosted/pub.dev/xdg_directories-1.1.0",
       "packageUri": "lib/",
@@ -1016,7 +1022,7 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2024-12-20T08:22:41.252126Z",
+  "generated": "2025-01-13T11:45:03.508459Z",
   "generator": "pub",
   "generatorVersion": "3.5.1",
   "flutterRoot": "file:///C:/sdk/flutter",

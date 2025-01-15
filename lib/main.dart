@@ -8,7 +8,23 @@ import 'package:kio_chat/view_model/shorts_video_provider.dart';
 import 'package:kio_chat/view_model/video_player_provider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:workmanager/workmanager.dart';
 import 'model/favouriteModel.dart';
+
+
+@pragma('vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) {
+
+    if(task=="play-background"){
+
+    }
+    print("Native called background task: $task"); //simpleTask will be emitted here.
+    return Future.value(true);
+  });
+}
+
+
 
 
 void main() async {
@@ -22,6 +38,11 @@ void main() async {
   //       storageBucket: 'kio-chat.firebasestorage.app',
   //     )
   // );
+
+  Workmanager().initialize(
+      callbackDispatcher, // The top level function, aka callbackDispatcher
+      isInDebugMode: true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+  );
 
   final appDocumentDirectory = await getApplicationDocumentsDirectory();
   Hive.init(appDocumentDirectory.path);
